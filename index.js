@@ -7,10 +7,10 @@ const path = require('path');
 global.appRoot = path.resolve(__dirname)
 
 
-require('dotenv').config();
+// require('dotenv').config();
+require('dotenv-flow').config();
 
 const app = express()
-
 mongoose.connect(process.env.DATABASE_URL, {useNewUrlParser: true, useUnifiedTopology: true})
 const db = mongoose.connection;
 db.on('error', (error) => console.log(error));
