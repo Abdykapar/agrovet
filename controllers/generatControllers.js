@@ -28,7 +28,11 @@ const controllers = {
         return Promise.resolve(docToGet)
     },
 
-    async getAll(model) {
+    async getAll(model, parent) {
+        if (parent) {
+            console.log(parent)
+            return await model.find({parent: parent})
+        }
         return await model.find()
     },
 
@@ -38,7 +42,7 @@ const controllers = {
 
     async findByParam(model, id) {
         return await model.findById(id)
-    }
+    },
 }
 
 const createOne = (model) => (req, res, next) => {
@@ -100,7 +104,7 @@ const getOne = (model) => (req, res, next) => {
 }
 
 const getAll = (model) => (req, res, next) => {
-    return controllers.getAll(model)
+    return controllers.getAll(model, req.query.parent)
         .then(docs => res.json(docs))
         .catch(err => next(err))
 }
