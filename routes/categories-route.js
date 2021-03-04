@@ -59,6 +59,13 @@ const upload = multer({ storage: storage});
  */
 
  /**
+ * @route GET /api/v1/categories/parent
+ * @group Categories
+ * @returns {PointReturn.model} 200 - An array of categories parent info
+ * @returns {Error}  default - Unexpected error
+ */
+
+ /**
  * @route DELETE /api/v1/categories/:id
  * @group Categories
  * @param {string} id.query.required - id: 60392376a9f5ab9bccf6500a
@@ -70,6 +77,7 @@ router.route('/')
     .get(categoryController.getAll)
 router.post('/', upload.single('image'), categoryController.createWithFile)
 router.get('/file/:fileName', categoryController.findByFile)
+router.get('/parent', categoryController.getParent)
 
 router.route('/:id')
     .put(categoryController.updateOne)

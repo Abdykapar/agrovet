@@ -30,10 +30,13 @@ const controllers = {
 
     async getAll(model, parent) {
         if (parent) {
-            console.log(parent)
             return await model.find({parent: parent})
         }
         return await model.find()
+    },
+
+    async getParent(model) {
+        return await model.find({parent: ''})
     },
 
     async getAllWithPopulate(model, nested) {
@@ -109,6 +112,12 @@ const getAll = (model) => (req, res, next) => {
         .catch(err => next(err))
 }
 
+const getParent = (model) => (req, res, next) => {
+    return controllers.getParent(model)
+        .then(docs => res.json(docs))
+        .catch(err => next(err))
+}
+
 const getAllWithPopulate = (model) => (req, res, next) => {
     return controllers.getAll(model)
         .then(docs => res.json(docs))
@@ -135,6 +144,7 @@ const generateControllers = (model, overrides = {}) => {
     const defaults = {
         findByParam: findByParam(model),
         getAll: getAll(model),
+        getParent: getParent(model),
         getOne: getOne(model),
         createOne: createOne(model),
         updateOne: updateOne(model),
