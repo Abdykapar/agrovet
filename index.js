@@ -11,6 +11,8 @@ global.appRoot = path.resolve(__dirname)
 require('dotenv-flow').config();
 
 const app = express()
+app.use(cors());
+app.options('*', cors());
 const expressSwagger = require('express-swagger-generator')(app);
 
 let options = {
@@ -48,7 +50,6 @@ db.on('error', (error) => console.log(error));
 db.once('open', () => console.log('Connected to database'));
 
 app.use(express.json());
-app.use(cors());
 app.use(express.static('public'));
 
 app.use(auth)
