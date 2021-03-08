@@ -5,7 +5,11 @@ const controllers = {
     },
 
     async createWithFile(model, body, file) {
-        const item = await new model({ ...body, image: file.filename })
+        let item
+        if (file) {
+            item = await new model({ ...body, image: file.filename })
+        } else
+            item = await new model({ ...body })
         return await item.save()
     },
 

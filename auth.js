@@ -23,7 +23,7 @@ router.post('/login', async (req, res, next) => {
             next(error);
         }
         const token = jwt.sign({ username: user.username, userId: user._id.toString() },
-            'superpupersecretword', { expiresIn: '2h' });
+            'superpupersecretword', { expiresIn: '1d' });
 
         res.status(200).json(
             {
