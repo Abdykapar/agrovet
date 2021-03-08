@@ -13,13 +13,13 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage});
 
 /**
- * @typedef Point
+ * @typedef Category
  * @property {string} title.required
  * @property {string} parent
  * @property {string} image
  */
 /**
- * @typedef PointReturn
+ * @typedef CategoryReturn
  * @property {string} title
  * @property {string} parent
  * @property {string} image
@@ -30,13 +30,13 @@ const upload = multer({ storage: storage});
  * @route GET /api/v1/categories
  * @group Categories
  * @param {string} parent.query - parent: 60392376a9f5ab9bccf6500a
- * @returns {Array.<PointReturn>} 200 - An array of categories info
+ * @returns {Array.<CategoryReturn>} 200 - An array of categories info
  * @returns {Error}  default - Unexpected error
  */
 /**
  * @route POST /api/v1/categories
  * @group Categories
- * @param {Point.model} point.body.required - the new point
+ * @param {Category.model} point.body.required - the new point
  * @returns {object} 200 - An array of categories info
  * @returns {Error}  default - Unexpected error
  */
@@ -45,7 +45,7 @@ const upload = multer({ storage: storage});
  * @route PUT /api/v1/categories/:id
  * @group Categories
  * @param {string} id.query.required - id: 60392376a9f5ab9bccf6500a
- * @param {Point.model} point.body.required - the new point
+ * @param {Category.model} point.body.required - the new point
  * @returns {object} 200 - An array of categories info
  * @returns {Error}  default - Unexpected error
  */
@@ -54,14 +54,14 @@ const upload = multer({ storage: storage});
  * @route GET /api/v1/categories/:id
  * @group Categories
  * @param {string} id.query.required - id: 60392376a9f5ab9bccf6500a
- * @returns {PointReturn.model} 200 - An array of categories info
+ * @returns {CategoryReturn.model} 200 - An array of categories info
  * @returns {Error}  default - Unexpected error
  */
 
  /**
  * @route GET /api/v1/categories/parent
  * @group Categories
- * @returns {PointReturn.model} 200 - An array of categories parent info
+ * @returns {CategoryReturn.model} 200 - An array of categories parent info
  * @returns {Error}  default - Unexpected error
  */
 
