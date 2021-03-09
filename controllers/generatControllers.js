@@ -44,7 +44,7 @@ const controllers = {
     },
 
     async getChild(model) {
-        return await model.find({parent: {$ne: ""}})
+        return await model.find({parent: {$ne: ""}}).populate('parent')
     },
 
     async getAllWithPopulate(model, nested) {
