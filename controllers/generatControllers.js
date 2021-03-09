@@ -43,6 +43,10 @@ const controllers = {
         return await model.find({parent: ''})
     },
 
+    async getChild(model) {
+        return await model.find({parent: {$ne: ""}})
+    },
+
     async getAllWithPopulate(model, nested) {
         return await model.find().populate(nested)
     },
@@ -122,6 +126,13 @@ const getParent = (model) => (req, res, next) => {
         .catch(err => next(err))
 }
 
+
+const getChild = (model) => (req, res, next) => {
+    return controllers.getChild(model)
+        .then(docs => res.json(docs))
+        .catch(err => next(err))
+}
+
 const getAllWithPopulate = (model) => (req, res, next) => {
     return controllers.getAll(model)
         .then(docs => res.json(docs))
@@ -149,12 +160,13 @@ const generateControllers = (model, overrides = {}) => {
         findByParam: findByParam(model),
         getAll: getAll(model),
         getParent: getParent(model),
+        getChild: getChild(model),
         getOne: getOne(model),
         createOne: createOne(model),
         updateOne: updateOne(model),
         deleteOne: deleteOne(model),
         createWithFile: createWithFile(model),
-        findByFile: findByFile(model)
+        findByFile: findByFile(model),
     }
 
     return { ...defaults, ...overrides }

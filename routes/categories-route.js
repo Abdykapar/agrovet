@@ -78,6 +78,7 @@ router.route('/')
 router.post('/', upload.single('image'), categoryController.createWithFile)
 router.get('/file/:fileName', categoryController.findByFile)
 router.get('/parent', categoryController.getParent)
+router.get('/sub', categoryController.getChild)
 
 router.route('/:id')
     .put(categoryController.updateOne)
