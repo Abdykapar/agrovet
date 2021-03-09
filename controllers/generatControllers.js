@@ -23,6 +23,13 @@ const controllers = {
         return { message: 'Success', status: 'ok' }
     },
 
+    async updateWithFile(docToUpdate, update, file) {
+        if (file) {
+            await docToUpdate.updateOne({...update, image: file.filename})
+        } else await docToUpdate.updateOne(update)
+        return { message: 'Success', status: 'ok' }
+    },
+
     async deleteOne (docToDelete) {
         await docToDelete.deleteOne()
         return { message: 'Success', status: 'ok' }
@@ -83,6 +90,20 @@ const updateOne = (model) => (req, res, next) => {
     const update = req.body
 
     return controllers.updateOne(docToUpdate, update)
+        .then(doc => res.status(201).json(doc))
+        .catch(err => {
+            if (!err.statusCode) {
+                err.statusCode = 500;
+            }
+            next(err)
+        })
+}
+
+const updateWithFile = (model) => (req, res, next) => {
+    const docToUpdate = req.docFromId
+    const update = req.body
+
+    return controllers.updateWithFile(docToUpdate, update, req.file)
         .then(doc => res.status(201).json(doc))
         .catch(err => {
             if (!err.statusCode) {
@@ -167,6 +188,7 @@ const generateControllers = (model, overrides = {}) => {
         deleteOne: deleteOne(model),
         createWithFile: createWithFile(model),
         findByFile: findByFile(model),
+        updateWithFile: updateWithFile(model),
     }
 
     return { ...defaults, ...overrides }
