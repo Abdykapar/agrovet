@@ -75,7 +75,7 @@ const upload = multer({ storage: storage});
 router.param('id', productController.findByParam)
 
 router.route('/')
-	.get(productController.getAll)
+	.get(productController.getAllWithPopulate)
 router.post('/', upload.single('image'), productController.createWithFile)
 
 router.route('/:id')

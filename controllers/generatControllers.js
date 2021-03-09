@@ -154,8 +154,8 @@ const getChild = (model) => (req, res, next) => {
         .catch(err => next(err))
 }
 
-const getAllWithPopulate = (model) => (req, res, next) => {
-    return controllers.getAll(model)
+const getAllWithPopulate = (model, nested) => (req, res, next) => {
+    return controllers.getAllWithPopulate(model, nested)
         .then(docs => res.json(docs))
         .catch(err => next(err))
 }
@@ -180,6 +180,7 @@ const generateControllers = (model, overrides = {}) => {
     const defaults = {
         findByParam: findByParam(model),
         getAll: getAll(model),
+        getAllWithPopulate: getAllWithPopulate(model, overrides.nested),
         getParent: getParent(model),
         getChild: getChild(model),
         getOne: getOne(model),
