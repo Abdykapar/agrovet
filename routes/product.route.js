@@ -3,6 +3,7 @@ const express = require('express')
 const router = express.Router()
 const productController = require('../controllers/product.controller')
 const multer = require('multer')
+const isAuth = require('../auth/is-auth')
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		cb(null, 'uploads/')
@@ -76,11 +77,11 @@ router.param('id', productController.findByParam)
 
 router.route('/')
 	.get(productController.getAllWithPopulate)
-router.post('/', upload.single('image'), productController.createWithFile)
+router.post('/', upload.single('image'), isAuth, productController.createWithFile)
+router.put('/:id', upload.single('image'), isAuth, productController.updateOne)
+router.delete('/:id', upload.single('image'), isAuth, productController.deleteOne)
 
 router.route('/:id')
-	.put(productController.updateOne)
-	.delete(productController.deleteOne)
 	.get(productController.getOne)
 
 module.exports = router

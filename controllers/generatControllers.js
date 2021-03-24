@@ -14,7 +14,7 @@ const controllers = {
     },
 
     async getFile(model, fileId) {
-        const item = await new model({ title: body.title, parent: body.parent, image: file.filename })
+        const item = await model.find({ image: fileId })
         return await item.save()
     },
 

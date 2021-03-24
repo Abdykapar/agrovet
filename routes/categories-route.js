@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const categoryController = require('../controllers/category.controller')
 const multer = require('multer')
+const isAuth = require('../auth/is-auth')
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		cb(null, 'uploads/')
@@ -75,14 +76,14 @@ const upload = multer({ storage: storage});
 router.param('id', categoryController.findByParam)
 router.route('/')
     .get(categoryController.getAll)
-router.post('/', upload.single('image'), categoryController.createWithFile)
+router.post('/', upload.single('image'), isAuth, categoryController.createWithFile)
 router.get('/file/:fileName', categoryController.findByFile)
 router.get('/parent', categoryController.getParent)
 router.get('/sub', categoryController.getChild)
-router.put('/:id', upload.single('image'), categoryController.updateWithFile)
+router.put('/:id', upload.single('image'), isAuth, categoryController.updateWithFile)
 
+router.delete('/:id', isAuth, categoryController.deleteOne)
 router.route('/:id')
-    .delete(categoryController.deleteOne)
     .get(categoryController.getOne)
 
 module.exports = router

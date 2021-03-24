@@ -2,7 +2,6 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const auth = require('./auth')
-const isAuth = require('./auth/is-auth')
 const path = require('path');
 global.appRoot = path.resolve(__dirname)
 
@@ -53,7 +52,7 @@ app.use(express.json());
 app.use(express.static('public'));
 
 app.use(auth)
-app.use('/api/v1', isAuth, require('./routes/router'))
+app.use('/api/v1', require('./routes/router'))
 
 app.use((error, req, res, next) => {
     const status = error.statusCode || 500;
