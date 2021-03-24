@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 const controllers = {
     async createOne(model, body) {
         const item = await new model(body)
@@ -25,12 +27,22 @@ const controllers = {
 
     async updateWithFile(docToUpdate, update, file) {
         if (file) {
+            if (docToUpdate.image) {
+                fs.unlink('uploads/'+docToUpdate.image, err => {
+                    console.error(err)
+                })
+            }
             await docToUpdate.updateOne({...update, image: file.filename})
         } else await docToUpdate.updateOne(update)
         return { message: 'Success', status: 'ok' }
     },
 
     async deleteOne (docToDelete) {
+        if (docToDelete.image){
+            fs.unlink('uploads/'+docToDelete.image, err => {
+                console.error(err)
+            })
+        }
         await docToDelete.deleteOne()
         return { message: 'Success', status: 'ok' }
     },
