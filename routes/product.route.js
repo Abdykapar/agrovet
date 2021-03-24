@@ -78,7 +78,7 @@ router.param('id', productController.findByParam)
 router.route('/')
 	.get(productController.getAllWithPopulate)
 router.post('/', upload.single('image'), isAuth, productController.createWithFile)
-router.put('/:id', upload.single('image'), isAuth, productController.updateOne)
+router.put('/:id', upload.single('image'), isAuth, productController.updateWithFile)
 router.delete('/:id', upload.single('image'), isAuth, productController.deleteOne)
 
 router.route('/:id')
