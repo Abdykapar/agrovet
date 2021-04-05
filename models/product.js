@@ -24,6 +24,26 @@ const productSchema = new mongoose.Schema({
     category: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category'
+    },
+    activeIngredient: {
+        type: String,
+        default: ''
+    },
+    methodEntry: {
+        type: String,
+        default: ''
+    },
+    chemicalClass: {
+        type: String,
+        default: ''
+    },
+    preparetionForm: {
+        type: String,
+        default: ''
+    },
+    dangerClass: {
+        type: String,
+        default: ''
     }
 })
 

@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 const categorySchema = new mongoose.Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        unique: false
     },
     parent: {
         type: String,
@@ -12,7 +13,7 @@ const categorySchema = new mongoose.Schema({
     image: {
         type: String,
         required: false
-    }
+    },
 })
 
 module.exports = mongoose.model('Category', categorySchema)
