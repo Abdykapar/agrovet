@@ -5,14 +5,19 @@ const productController = require('../controllers/product.controller')
 const multer = require('multer')
 const isAuth = require('../auth/is-auth')
 const storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-		cb(null, 'uploads/')
-	},
-	filename: function (req, file, cb) {
-		cb(null, Date.now() + file.originalname)
-	}
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + file.originalname)
+  },
 })
-const upload = multer({ storage: storage});
+const upload = multer({ storage: storage })
+
+const multipleUpload = upload.fields([
+  { name: 'image', maxCount: 1 },
+  { name: 'images', maxCount: 5 },
+])
 
 /**
  * @typedef Point
@@ -20,6 +25,7 @@ const upload = multer({ storage: storage});
  * @property {integer} price
  * @property {integer} weight
  * @property {string} image
+ * @property {string} images
  * @property {string} description.required
  * @property {string} category.required
  */
@@ -29,6 +35,7 @@ const upload = multer({ storage: storage});
  * @property {integer} price
  * @property {integer} weight
  * @property {string} image
+ * @property {string} images
  * @property {string} description.required
  * @property {string} category.required
  * @property {string} _id
@@ -48,7 +55,7 @@ const upload = multer({ storage: storage});
  * @returns {Error}  default - Unexpected error
  */
 
- /**
+/**
  * @route PUT /api/v1/products/:id
  * @group Products
  * @param {string} id.query.required - id: 60392376a9f5ab9bccf6500a
@@ -57,7 +64,7 @@ const upload = multer({ storage: storage});
  * @returns {Error}  default - Unexpected error
  */
 
- /**
+/**
  * @route GET /api/v1/products/:id
  * @group Products
  * @param {string} id.query.required - id: 60392376a9f5ab9bccf6500a
@@ -65,7 +72,7 @@ const upload = multer({ storage: storage});
  * @returns {Error}  default - Unexpected error
  */
 
- /**
+/**
  * @route DELETE /api/v1/products/:id
  * @group Products
  * @param {string} id.query.required - id: 60392376a9f5ab9bccf6500a
@@ -75,13 +82,16 @@ const upload = multer({ storage: storage});
 
 router.param('id', productController.findByParam)
 
-router.route('/')
-	.get(productController.getAllWithPopulate)
-router.post('/', upload.single('image'), isAuth, productController.createWithFile)
-router.put('/:id', upload.single('image'), isAuth, productController.updateWithFile)
-router.delete('/:id', upload.single('image'), isAuth, productController.deleteOne)
+router.route('/').get(productController.getAllWithPopulate)
+router.post('/', multipleUpload, isAuth, productController.createWithFile)
+router.put('/:id', multipleUpload, isAuth, productController.updateWithFile)
+router.delete(
+  '/:id',
+  upload.single('image'),
+  isAuth,
+  productController.deleteOne
+)
 
-router.route('/:id')
-	.get(productController.getOne)
+router.route('/:id').get(productController.getOne)
 
 module.exports = router

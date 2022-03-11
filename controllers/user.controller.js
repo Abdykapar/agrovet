@@ -1,4 +1,4 @@
-const controller = require('../controllers/generatControllers')
+const controller = require('./generateControllers')
 const User = require('../models/user')
 
 module.exports = controller.generateControllers(User)
