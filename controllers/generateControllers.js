@@ -49,7 +49,7 @@ const controllers = {
       }
       await docToUpdate.updateOne({
         ...update,
-        image: image && image.length ? image[0].filename : '',
+        image: image && image.length ? image[0].filename : docToUpdate.image,
       })
       if (images && images.length) {
         for (let i of images) {
@@ -152,7 +152,7 @@ const updateWithFile = (model) => (req, res, next) => {
   const update = req.body
 
   return controllers
-    .updateWithFile(docToUpdate, update, req.file)
+    .updateWithFile(docToUpdate, update, req.files)
     .then((doc) => res.status(201).json(doc))
     .catch((err) => {
       if (!err.statusCode) {
@@ -257,12 +257,12 @@ const generateControllers = (model, overrides = {}) => {
 
 module.exports = {
   controllers,
-  createOne,
-  updateOne,
-  getAll,
-  getOne,
-  findByParam,
-  createWithFile,
-  findByFile,
+  createOne: generateControllers.createOne,
+  updateOne: generateControllers.updateOne,
+  getAll: generateControllers.getAll,
+  getOne: generateControllers.getOne,
+  findByParam: generateControllers.findByParam,
+  createWithFile: generateControllers.createWithFile,
+  findByFile: generateControllers.findByFile,
   generateControllers,
 }

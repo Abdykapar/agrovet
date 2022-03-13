@@ -6,5 +6,6 @@ router.use('/categories', require('../routes/categories-route'))
 router.use('/user', isAuth, require('../routes/user.route'))
 router.use('/products', require('../routes/product.route'))
 router.use('/images', require('../routes/image.route'))
+router.use('/address', require('../routes/address.route'))
 
 module.exports = router

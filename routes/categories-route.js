@@ -13,6 +13,11 @@ const storage = multer.diskStorage({
 })
 const upload = multer({ storage: storage, limits: { fileSize: 1282810 } })
 
+const multipleUpload = upload.fields([
+  { name: 'image', maxCount: 1 },
+  { name: 'images', maxCount: 5 },
+])
+
 /**
  * @typedef Category
  * @property {string} title.required
@@ -75,21 +80,11 @@ const upload = multer({ storage: storage, limits: { fileSize: 1282810 } })
  */
 router.param('id', categoryController.findByParam)
 router.route('/').get(categoryController.getAll)
-router.post(
-  '/',
-  upload.single('image'),
-  isAuth,
-  categoryController.createWithFile
-)
+router.post('/', multipleUpload, isAuth, categoryController.createWithFile)
 router.get('/file/:fileName', categoryController.findByFile)
 router.get('/parent', categoryController.getParent)
 router.get('/sub', categoryController.getChild)
-router.put(
-  '/:id',
-  upload.single('image'),
-  isAuth,
-  categoryController.updateWithFile
-)
+router.put('/:id', multipleUpload, isAuth, categoryController.updateWithFile)
 
 router.delete('/:id', isAuth, categoryController.deleteOne)
 router.route('/:id').get(categoryController.getOne)
