@@ -1,5 +1,5 @@
 const express = require('express')
-
+const path = require('path')
 const router = express.Router()
 const productController = require('../controllers/product.controller')
 const multer = require('multer')
@@ -9,7 +9,7 @@ const storage = multer.diskStorage({
     cb(null, 'uploads/')
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + file.originalname)
+    cb(null, Date.now() +  path.extname(file.originalname))
   },
 })
 const upload = multer({ storage: storage })
