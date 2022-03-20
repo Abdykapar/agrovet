@@ -53,6 +53,10 @@ const productSchema = new mongoose.Schema({
     type: String,
     default: '',
   },
+  turn: {
+    type: Number,
+    default: 1000,
+  },
 })
 
 module.exports = mongoose.model('Product', productSchema)
