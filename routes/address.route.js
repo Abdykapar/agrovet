@@ -1,7 +1,17 @@
 const express = require('express')
 const router = express.Router()
 const addressController = require('../controllers/address.controller')
+const multer = require('multer')
 const isAuth = require('../auth/is-auth')
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + (file && file.originalname))
+  },
+})
+const upload = multer({ storage: storage, limits: { fileSize: 1282810 } })
 
 /**
  * @typedef Address
@@ -57,8 +67,18 @@ const isAuth = require('../auth/is-auth')
  */
 router.param('id', addressController.findByParam)
 router.route('/').get(addressController.getAll)
-router.post('/', isAuth, addressController.createOne)
-router.put('/:id', isAuth, addressController.updateOne)
+router.post(
+  '/',
+  upload.single('image'),
+  isAuth,
+  addressController.createWithFile
+)
+router.put(
+  '/:id',
+  upload.single('image'),
+  isAuth,
+  addressController.updateWithFile
+)
 
 router.delete('/:id', isAuth, addressController.deleteOne)
 router.route('/:id').get(addressController.getOne)

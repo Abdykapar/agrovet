@@ -18,4 +18,33 @@ module.exports = controller.generateControllers(Address, {
         next(err)
       })
   },
+  async createWithFile(req, res, next) {
+    const body = req.body,
+      image = req.file
+    let item
+
+    const addressBody = {
+      ...body,
+      phones: Array.isArray(body.phones)
+        ? body.phones.map((i) => ({ name: i }))
+        : [{ name: body.phones }],
+    }
+    try {
+      if (image) {
+        item = await new Address({
+          ...addressBody,
+          image: image.filename,
+        })
+      } else item = await new Address({ ...addressBody })
+      await item.save()
+      res
+        .status(201)
+        .json({ message: 'Successfully address created!', status: 'ok' })
+    } catch (err) {
+      if (!err.statusCode) {
+        err.statusCode = 500
+      }
+      next(err)
+    }
+  },
 })
