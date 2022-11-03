@@ -9,7 +9,7 @@ const storage = multer.diskStorage({
     cb(null, 'uploads/')
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() +  path.extname(file.originalname))
+    cb(null, Date.now() + path.extname(file.originalname))
   },
 })
 const upload = multer({ storage: storage })
@@ -91,6 +91,7 @@ router.delete(
   isAuth,
   productController.deleteOne
 )
+router.get('/search', productController.search)
 
 router.route('/:id').get(productController.getOne)
 
