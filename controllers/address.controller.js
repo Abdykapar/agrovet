@@ -47,4 +47,33 @@ module.exports = controller.generateControllers(Address, {
       next(err)
     }
   },
+  async updateWithFile(req, res, next) {
+    const body = req.body,
+      image = req.file,
+      id = req.params.id
+    let item = await Address.findById(id)
+
+    const addressBody = {
+      ...body,
+      phones: Array.isArray(body.phones)
+        ? body.phones.map((i) => ({ name: i }))
+        : [{ name: body.phones }],
+    }
+    try {
+      if (image) {
+        await item.updateOne({
+          ...addressBody,
+          image: image.filename,
+        })
+      } else item = await item.updateOne({ ...addressBody })
+      res
+        .status(201)
+        .json({ message: 'Successfully address updated!', status: 'ok' })
+    } catch (err) {
+      if (!err.statusCode) {
+        err.statusCode = 500
+      }
+      next(err)
+    }
+  },
 })
