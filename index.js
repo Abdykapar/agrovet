@@ -4,6 +4,7 @@ const cors = require('cors')
 const auth = require('./auth')
 const path = require('path')
 global.appRoot = path.resolve(__dirname)
+import bodyParser from 'body-parser'
 
 // require('dotenv').config();
 require('dotenv-flow').config()
@@ -47,8 +48,17 @@ const db = mongoose.connection
 db.on('error', (error) => console.log(error))
 db.once('open', () => console.log('Connected to database'))
 
-app.use(express.json({ limit: '50mb' }))
-app.use(express.urlencoded({ limit: '50mb' }))
+// app.use(express.json({ limit: '50mb' }))
+// app.use(express.urlencoded({ limit: '50mb' }))
+app.use(bodyParser.json({ limit: '35mb' }))
+
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+    limit: '35mb',
+    parameterLimit: 50000,
+  })
+)
 app.use(express.static('public'))
 
 app.use(auth)
