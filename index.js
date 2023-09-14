@@ -4,7 +4,7 @@ const cors = require('cors')
 const auth = require('./auth')
 const path = require('path')
 global.appRoot = path.resolve(__dirname)
-import bodyParser from 'body-parser'
+const bodyParser = require('body-parser')
 
 // require('dotenv').config();
 require('dotenv-flow').config()
