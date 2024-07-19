@@ -40,9 +40,8 @@ let options = {
 
 expressSwagger(options)
 
-mongoose.connect(process.env.DATABASE_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+mongoose.connect(process.env.DATABASE_URL).catch(err => {
+  console.log(err)
 })
 const db = mongoose.connection
 db.on('error', (error) => console.log(error))
